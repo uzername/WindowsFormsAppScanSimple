@@ -128,25 +128,32 @@ namespace WindowsFormsApp1.SimpleBarcodeHandling
             recordedOwner = in_wndParent;
         }
         public void renderWindowStatusMessage(String in_Status, int index, bool critical) {
-            if (serviceForm != null) {
-                switch (index)
-                {
-                    case 0: {
-                            (serviceForm as MyInfoWindow).setInfoText(in_Status, critical);
-                            break;
-                    }
-                    case 1: {
-                            (serviceForm as MyInfoWindow).setInfoText1(in_Status, critical);
-                            break;
-                    }
-                    case 2: {
-                            (serviceForm as MyInfoWindow).setInfoText2(in_Status, critical);
-                            break;
-                    }
-                    default: { break; }
-                }
-                
+            if ((serviceForm == null)||(serviceForm.IsDisposed)) {
+                serviceForm = new MyInfoWindow();
+                serviceForm.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+                serviceForm.Width = 300;
+                serviceForm.Height = 100;
+                serviceForm.Show(this.recordedOwner);
             }
+            if (serviceForm.Visible == false) {
+                serviceForm.Show(this.recordedOwner);
+            }
+            switch (index) {
+                case 0: {
+                        (serviceForm as MyInfoWindow).setInfoText(in_Status, critical);
+                        break;
+                    }
+                case 1: {
+                        (serviceForm as MyInfoWindow).setInfoText1(in_Status, critical);
+                        break;
+                    }
+                case 2: {
+                        (serviceForm as MyInfoWindow).setInfoText2(in_Status, critical);
+                        break;
+                    }
+                default: { break; }
+            }
+
         }
         public void renderWindowStatus() {
             // https://stackoverflow.com/a/428517
